@@ -1,0 +1,3 @@
+name: pulumi-gke-demo
+runtime: nodejs
+description: Pulumi demo using GKE and TypeScript

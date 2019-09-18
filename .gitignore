@@ -1,0 +1,6 @@
+/node_modules/
+/.vscode/
+/.pulumi/
+package-lock.json
+Pulumi.*.yaml
+kubeconfig.yaml
