@@ -1,5 +1,7 @@
 {
     "name": "pulumi-gke-demo",
+    "description": "Pulumi demo using GKE and TypeScript",
+    "license": "MIT",
     "main": "index.js",
     "devDependencies": {
         "@types/node": "latest"
