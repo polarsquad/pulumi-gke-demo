@@ -38,7 +38,7 @@ const nginxIngress = new k8s.networking.v1beta1.Ingress("nginx-ingress", {
             servicePort: 80
         }
     }
-});
+}, { provider: k8sProvider});
 
 // Export the Kubeconfig so that clients can easily access our cluster.
 export let kubeConfig = k8sConfig;
