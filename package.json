@@ -3,8 +3,14 @@
     "description": "Pulumi demo using GKE and TypeScript",
     "license": "MIT",
     "main": "index.js",
+    "scripts": {
+        "lint": "eslint *.ts"
+    },
     "devDependencies": {
-        "@types/node": "latest"
+        "@types/node": "latest",
+        "@typescript-eslint/eslint-plugin": "^2.3.0",
+        "@typescript-eslint/parser": "^2.3.0",
+        "eslint": "^6.4.0"
     },
     "dependencies": {
         "@pulumi/gcp": "^1.0.0",

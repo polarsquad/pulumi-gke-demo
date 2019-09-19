@@ -1,51 +1,51 @@
-"use strict";
-import * as gcp from "@pulumi/gcp";
-import * as k8s from "@pulumi/kubernetes";
-import * as pulumi from "@pulumi/pulumi";
+"use strict"
+import * as gcp from "@pulumi/gcp"
+import * as k8s from "@pulumi/kubernetes"
+import * as pulumi from "@pulumi/pulumi"
 import { gcpRegion,
-         username,
-         password,
-         nodeMachineType,
-         gkeKubeVersion,
-         poolNodeCount } from "./config";
+  username,
+  password,
+  nodeMachineType,
+  gkeKubeVersion,
+  poolNodeCount } from "./config"
 
 const cluster = new gcp.container.Cluster("pulumi-demo-cluster", {
-    initialNodeCount: 1,
-    nodeVersion: gkeKubeVersion,
-    minMasterVersion: gkeKubeVersion,
-    location: gcpRegion,
-    masterAuth: {
-        clientCertificateConfig: {
-            issueClientCertificate: false,
-        },
-        username,
-        password
+  initialNodeCount: 1,
+  nodeVersion: gkeKubeVersion,
+  minMasterVersion: gkeKubeVersion,
+  location: gcpRegion,
+  masterAuth: {
+    clientCertificateConfig: {
+      issueClientCertificate: false,
     },
-    removeDefaultNodePool: true,
-});
+    username,
+    password
+  },
+  removeDefaultNodePool: true,
+})
 
 const nodes = new gcp.container.NodePool("pulumi-demo-nodes", {
-    cluster: cluster.name,
-    location: gcpRegion,
-    nodeConfig: {
-        machineType: nodeMachineType,
-        metadata: {
-            "disable-legacy-endpoints": "true",
-        },
-        oauthScopes: [
-            "https://www.googleapis.com/auth/logging.write",
-            "https://www.googleapis.com/auth/monitoring",
-        ],
-        preemptible: true,
+  cluster: cluster.name,
+  location: gcpRegion,
+  nodeConfig: {
+    machineType: nodeMachineType,
+    metadata: {
+      "disable-legacy-endpoints": "true",
     },
-    nodeCount: poolNodeCount
-});
+    oauthScopes: [
+      "https://www.googleapis.com/auth/logging.write",
+      "https://www.googleapis.com/auth/monitoring",
+    ],
+    preemptible: true,
+  },
+  nodeCount: poolNodeCount
+})
 
 export const k8sConfig = pulumi.
-    all([ cluster.name, cluster.endpoint, cluster.masterAuth ]).
-    apply(([ name, endpoint, auth ]) => {
-        const context = `${gcp.config.project}_${gcp.config.zone}_${name}`;
-        return `apiVersion: v1
+  all([ cluster.name, cluster.endpoint, cluster.masterAuth ]).
+  apply(([ name, endpoint, auth ]) => {
+    const context = `${gcp.config.project}_${gcp.config.zone}_${name}`
+    return `apiVersion: v1
 clusters:
 - cluster:
     certificate-authority-data: ${auth.clusterCaCertificate}
@@ -69,10 +69,10 @@ users:
         expiry-key: '{.credential.token_expiry}'
         token-key: '{.credential.access_token}'
       name: gcp
-`;
-    });
+`
+  })
 
 // Export a Kubernetes provider instance that uses our cluster from above.
 export const k8sProvider = new k8s.Provider("gkeK8s", {
-    kubeconfig: k8sConfig,
-});
+  kubeconfig: k8sConfig,
+})
