@@ -9,7 +9,9 @@ import { gcpRegion,
   gkeKubeVersion,
   poolNodeCount } from "./config"
 
-const cluster = new gcp.container.Cluster("pulumi-demo-cluster", {
+const stackName = pulumi.getStack()
+
+const cluster = new gcp.container.Cluster(`${stackName}-cluster`, {
   initialNodeCount: 1,
   nodeVersion: gkeKubeVersion,
   minMasterVersion: gkeKubeVersion,
@@ -24,7 +26,7 @@ const cluster = new gcp.container.Cluster("pulumi-demo-cluster", {
   removeDefaultNodePool: true,
 })
 
-const nodes = new gcp.container.NodePool("pulumi-demo-nodes", {
+const nodes = new gcp.container.NodePool(`${stackName}-nodes`, {
   cluster: cluster.name,
   location: gcpRegion,
   nodeConfig: {
