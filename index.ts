@@ -2,16 +2,18 @@
 import * as k8s from "@pulumi/kubernetes"
 import * as pulumi from "@pulumi/pulumi"
 import { k8sConfig, k8sProvider } from "./cluster"
+import { nginxReplicas, nginxImageTag } from "./config"
 
 const name = `${pulumi.getProject()}-${pulumi.getStack()}`
 const nginxLabels = { app: `nginx-${name}` }
+
 const nginxDeployment = new k8s.apps.v1.Deployment("nginx", {
   spec: {
     selector: { matchLabels: nginxLabels },
-    replicas: 1,
+    replicas: nginxReplicas,
     template: {
       metadata: { labels: nginxLabels },
-      spec: { containers: [{ name, image: "nginx" }] },
+      spec: { containers: [{ name, image: `nginx:${nginxImageTag}` }] },
     },
   },
 }, { provider: k8sProvider })

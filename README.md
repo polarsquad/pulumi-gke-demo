@@ -27,3 +27,13 @@ You can then spin up your infrastructure:
 ```bash
 pulumi up
 ```
+
+You can also configure aspects of what is deployed using `pulumi config set`.
+For example:
+
+```bash
+pulumi config set nginxReplicas 3
+pulumi config set nginxImageTag 1.17.3-alpine
+```
+
+For a full list of config options see `config.ts`.
