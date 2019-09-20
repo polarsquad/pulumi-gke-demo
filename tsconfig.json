@@ -16,9 +16,6 @@
         "forceConsistentCasingInFileNames": true,
         "strictNullChecks": true
     },
-    "files": [
-        "index.ts",
-        "config.ts",
-        "cluster.ts"
-    ]
+    "include": ["src/**/*"],
+    "exclude": ["node_modules", "**/*.test.ts"]
 }
