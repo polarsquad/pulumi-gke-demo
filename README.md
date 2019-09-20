@@ -3,13 +3,22 @@
 This demonstrates using Pulumi to create a Kubernetes cluster in Google Cloud
 Platform (GCP) with Google Kubernetes Engine (GKE).
 
+You can find instructions for installing the Pulumi CLI in the [Pulumi
+documentation](https://www.pulumi.com/docs/get-started/).
+
 ## Usage
+
+Install dependencies using npm:
+
+```bash
+npm install
+```
 
 With Pulumi, an instance of infrastructure created from a given codebase is
 called a "stack". You can create several stacks from the same codebase. For
 instance, you could create stacks called dev, staging and prod.
 
-First initialize a stack called `dev`:
+Initialize a stack called `dev`:
 
 ```bash
 pulumi stack init dev
